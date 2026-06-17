@@ -1,0 +1,11 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Nothing else to ignore: this repo is the source of truth for the
+# loop skills (prose only). Per-project build state such as
+# feature_list.json, claude-progress.txt and specs/ lives in the
+# product repos that the loop runs against, NOT here.
