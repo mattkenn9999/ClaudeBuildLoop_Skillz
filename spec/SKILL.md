@@ -73,6 +73,16 @@ Rules for the feature list:
 - Use JSON, not Markdown, for this file. The build and review agents are far less likely to quietly overwrite a JSON file, and this file must survive intact across many sessions.
 - Be comprehensive. Under-listing here causes the loop to declare victory early. It is normal for a real app to have dozens of features. Prefer many small, checkable features over a few vague large ones.
 
+### 4. Three checks that keep features verifiable
+
+A feature that is end-to-end but not actually checkable in practice is where the loop wastes its error budget. Before finalising the list, apply these three checks. Each prevents a specific, recurring kind of thrash.
+
+- **Pin the data in the feature that produces it.** If one feature's pass condition depends on specific input data (a duplicate or tie-inducing pair, a known near-miss, a value that lands in a particular range, a record with a specific shape), the feature that *creates* that data must specify it concretely, not just describe the data set in the abstract. Otherwise the build invents arbitrary data and the dependent feature becomes hard or impossible to satisfy. Name the exact entries and the probe that exercises them.
+
+- **Verify process-boundary contracts by running the process.** When a behaviour is observable only at the boundary (a process exit code, what lands on stdout versus stderr, a file written to disk, an HTTP status), the feature must be checked by running the real thing end to end, not by calling an inner function and inspecting its return value. State this in the steps ("run the CLI as a subprocess and assert the exit code", "drive the UI and observe what renders"). A green test that never crossed the boundary does not verify the contract.
+
+- **Keep inner functions injectable when the product contract is fixed.** Sometimes the product deliberately locks something down (a path that is not user-configurable, a fixed endpoint, a constant). The error and edge-case features still need to exercise the locked thing with bad or alternative values. Resolve the tension by keeping the *inner function* parameterised (defaulting to the fixed value) so tests can inject alternatives, while the *outer interface* stays locked. Note this in the spec so the build does not hard-code the value inline and leave the edge cases untestable.
+
 ## Hand-off
 
 When the spec and feature list are written, stop and tell the user to run `/init` next to scaffold the build environment. Do not run `/init` yourself and do not start building.
