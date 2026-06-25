@@ -39,6 +39,7 @@ From `feature_list.json`, pick the highest-priority feature where `passes` is fa
 - Run `verify_cmd`. Use the result to fix obvious breakage now, while you have the context.
 - Do not set `passes` to true yourself. Scoring is the review step's job, and keeping building and grading separate is what makes the loop reliable. Record what you did in the feature's `last_result` field instead.
 - Commit your work to git with a descriptive message naming the feature id. Update `claude-progress.txt` with a short note: what you built, current state, anything the next agent should know.
+- When you update `claude-progress.txt`, keep its standing sections true, do not only append to the log. If a section describes the project as a bare scaffold or a file as a placeholder and that is no longer the case, correct it. A cold-start agent reads those standing sections as current truth, so a stale "what exists now" section can wrongly convince the next session that little has been built.
 
 ### 5. Hand off
 

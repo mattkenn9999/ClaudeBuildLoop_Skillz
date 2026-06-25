@@ -79,6 +79,11 @@ npm run test:e2e   # browser-driven, asserts real user flows
 
 If the project has no tests yet, write verify.sh to run what exists now and leave a clear TODO marker for the categories still missing, so review knows coverage is partial rather than assuming green means done.
 
+For UI projects, two harness details make the difference between a clean browser-verification run and one that fails for reasons unrelated to the product. Set them up here rather than leaving them for the loop to discover:
+
+- **Configure the browser runner to start the app itself.** Wire the end-to-end runner to boot the dev server (or a preview build) and wait for it to be ready before tests run, e.g. Playwright's `webServer` option. Without it, the E2E tests fail on connection refused rather than on any real defect.
+- **Disable animation in tests.** Charts and other animated components should render with animation off in the test build (e.g. `isAnimationActive={false}`). Otherwise the browser runner can snapshot a mid-animation, half-rendered DOM and the test flakes on timing rather than on data.
+
 ### 5. Initialise git and the progress log
 
 - `git init` if not already a repo, then make an initial commit that records the scaffolding you added, with a clear message.

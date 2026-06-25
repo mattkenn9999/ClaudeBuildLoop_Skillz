@@ -4,6 +4,18 @@ All notable changes to the loop skills. Because skills are prompts, small
 wording changes can shift loop behaviour, so record anything that might.
 Newest first. Date format YYYY-MM-DD.
 
+## 2026-06-25
+
+init: added UI-harness defaults to the verify.sh section — start the dev server
+from the browser runner (e.g. Playwright webServer) and disable animation in
+test builds (e.g. isAnimationActive={false}). build: added a progress-file
+freshness rule — keep the standing sections of claude-progress.txt true, do not
+only append to the log. Both promoted from evidence after the second loop run
+(path-to-spain, first UI build): the two harness defaults were per-project spec
+notes that produced zero browser flakiness across nine E2E tests, and the run
+exposed a stale "what exists now" section that still described the placeholder
+scaffold after the build was complete.
+
 ## 2026-06-22
 
 spec: added "Three checks that keep features verifiable" (data pinned in the
