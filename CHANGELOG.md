@@ -4,6 +4,17 @@ All notable changes to the loop skills. Because skills are prompts, small
 wording changes can shift loop behaviour, so record anything that might.
 Newest first. Date format YYYY-MM-DD.
 
+## 2026-06-25c
+
+spec: refined incremental mode after its first real run (path-to-spain v2,
+a replacement-depth change). Two evidence-backed edits: (1) legitimise
+regenerating the feature list with all features at passes:false for
+replacement-depth changes, while clarifying this does NOT mean rebuilding the
+app (the build still edited existing code incrementally, confirmed by a single
+incremental commit on top of v1 history); (2) make the preserved/revised/added
+report mandatory even when the list is regenerated, since the run produced a
+renumbered all-false list with no scope report, hiding what changed.
+
 ## 2026-06-25b
 
 spec: added incremental mode. When feature_list.json already exists, spec reads
