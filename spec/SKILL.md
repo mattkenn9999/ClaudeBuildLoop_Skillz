@@ -1,6 +1,6 @@
 ---
 name: spec
-description: Turn a software idea into a buildable spec and a structured, checkable feature list before any code is written. Use this whenever the user wants to start a new build, says "/spec", describes a feature or app they want, or asks to plan, scope, or define requirements for something to be built. Always use this at the very start of a loop-based build, even if the user is keen to jump straight to coding, because the rest of the loop depends on the artefacts this produces.
+description: Turn a software idea into a buildable spec and a structured, checkable feature list before any code is written. Use this whenever the user wants to start a new build, says "/spec", describes a feature or app they want, or asks to plan, scope, or define requirements for something to be built. Also use it to extend an existing build: when the user wants to add fields, features, or change behaviour on a project that already has a spec and feature_list.json, this skill runs in incremental mode. Always use this at the very start of a loop-based build, even if the user is keen to jump straight to coding, because the rest of the loop depends on the artefacts this produces.
 ---
 
 # spec
@@ -10,6 +10,24 @@ This is the first step of a self-correcting build loop. Its job is to understand
 ## Why this step matters
 
 A loop can only climb towards a target if the target is precise and checkable. Vague goals produce loops with no natural stopping point. The single most valuable thing you produce here is not the prose, it is `feature_list.json`: a list of end-to-end, user-observable behaviours that something can later run and confirm. Get that right and the rest of the loop has ground truth to grade against.
+
+## Greenfield or incremental: decide first
+
+Before interviewing, check whether `feature_list.json` already exists for this project.
+
+If it does **not** exist, this is a greenfield build. Proceed with the steps below as written.
+
+If it **does** exist, you are extending an existing project, so run in **incremental mode**:
+
+- Read the existing `specs/<name>.md` and `feature_list.json` first. Understand what is already built and verified before proposing anything.
+- Interview only about the **delta**, the new or changed requirements, not the whole project again.
+- **Preserve** every existing feature that remains valid exactly as it is, including its `id` and its `passes` flag. Do not renumber, reword, or reset features that the change does not affect.
+- **Append** genuinely new features after the highest existing id, each with `passes: false` and `attempts: 0`.
+- **Extend** the spec with a new section and extend (do not overwrite) the worked example. If new behaviour needs its own ground-truth numbers, add them alongside the existing ones.
+- **Honesty rule (the part that keeps incremental safe):** if the change alters or removes behaviour that an existing feature asserts, a changed mechanic, a dropped assumption, or different ground-truth numbers, that feature is now invalid. Do **not** leave it marked passing. Rewrite it to the new behaviour and set `passes: false` so it is rebuilt and re-verified, or remove it if the behaviour is gone entirely. A `passes: true` flag must always mean "verified against current truth", never "was true under the old design".
+- Before handing off, tell the user plainly which existing features you **preserved**, which you **revised** (and why), and which you **added**, so the scope of the change is visible before the loop runs.
+
+The rest of this skill (the interview discipline, the feature-list rules, the three verifiability checks) applies in both modes.
 
 ## What to do
 
